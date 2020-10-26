@@ -173,17 +173,26 @@ def add_product():
     return jsonify({'status':"success"})
 
 
-@app.route('/cookie/monster')
+@app.route('/cookie/monster', methods=['POST'])
 def get_cookies():
 
-    cookie = request.args.get("cookie")
-    print(request.data)
-    print(cookie)
+    form_data = request.form
+
+    cookies = parse_cookie_string(form_data['cookie'])
+
+    print(cookies)
+    
     return jsonify(
         {
             "status": "sucess",
         }
     )
+
+def parse_cookie_string(cookie_string):
+
+    items = [item.split('=') for item in cookie_string.split(';')]
+    cookies = {key:value for key,value in items}
+    return cookies
 
 def transform_product_details(items):
 
