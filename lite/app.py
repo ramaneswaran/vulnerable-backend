@@ -19,15 +19,10 @@ CORS(app)
 mysql = MySQL()
 
 database = r"./dummy.db"
-conn = sqlite3.connect(database)
 
-app.config['MYSQL_DATABASE_USER'] = 'dummy'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Raman@sr7'
-app.config['MYSQL_DATABASE_DB'] = 'craiglist'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+
 app.config['JWT_SECRET_KEY'] = 'secret'
 
-mysql.init_app(app)
 jwt = JWTManager(app)
 
 
@@ -45,7 +40,7 @@ def login():
     email = data['email']
     password = data['password']
 
-    conn = mysql.connect()
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     query = "select password from user where email='{}';".format(email)
@@ -75,7 +70,7 @@ def unsafe_login():
     email = data['email']
     password = data['password']
 
-    conn = mysql.connect()
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     query = "select * from user where email="+email+"and password="+password+";"
@@ -110,7 +105,7 @@ def register():
     email = data['email']
     password = data['password']
 
-    conn = mysql.connect()
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     query = "insert into user (id, email, password) values ({},'{}','{}')".format(id, email, password)
@@ -137,7 +132,7 @@ def product_details():
     
     print(prod_name)
 
-    conn = mysql.connect()
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     query = "select * from product where prod_name like '%{}%'".format(prod_name)
@@ -166,7 +161,7 @@ def add_product():
     prod_name = data['prod_name']
     prod_price = data['prod_price']
 
-    conn = mysql.connect()
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     cursor.execute("insert into product (prod_id, prod_name, prod_price) values ({}, '{}', {})".format(prod_id, prod_name, prod_price))
