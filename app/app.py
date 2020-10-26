@@ -43,7 +43,7 @@ def login():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    query = "select password from user where email='{}'".format(email)
+    query = "select password from user where email='{}';".format(email)
     cursor.execute(query)
 
     hashed_password = cursor.fetchone()[0]
@@ -62,6 +62,39 @@ def login():
 
     else:
         return jsonify({'status':"failure", 'access_token':None, 'error':'Invalid Credentials'}), 200
+
+
+@app.route('/unsafe/login', methods=['POST'])
+def unsafe_login():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    query = "select * from user where email="+email+"and password="+password+";"
+    print("Query is")
+    print(query)
+    cursor.execute(query)
+
+    hashed_password = cursor.fetchone()
+    
+    print("Hashed password: {}".format(hashed_password))
+
+    cursor.close()
+    conn.close()
+
+    if hashed_password:
+        access_token = create_access_token(identity={'email':email})
+    
+
+        return jsonify({'status':"success", 'access_token':access_token, 'error':'None'}), 200
+
+
+    else:
+        return jsonify({'status':"failure", 'access_token':None, 'error':'Invalid Credentials'}), 200
+
 
 
 @app.route('/register', methods=['POST'])
@@ -89,20 +122,31 @@ def register():
     return jsonify({'status':"success", 'access_token':access_token, 'error':'None'}), 200
 
 
-@app.route('/products')
+@app.route('/products', methods=['POST'])
 def product_details():
     
+    data = request.get_json()
+    
+    prod_name = data['prod_name']
+
+    
+    print(prod_name)
 
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    cursor.execute("select * from product")
+    query = "select * from product where prod_name like '%{}%'".format(prod_name)
+    cursor.execute(query)
     products = cursor.fetchall()
 
     meta, data = transform_product_details(products)
     
     cursor.close()
     conn.close()
+
+    if prod_name == "":
+        data = []
+        
 
     return jsonify({
         'status':'Success',
