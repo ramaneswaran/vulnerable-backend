@@ -11,10 +11,11 @@
         document.cookie = "username=John Doe"; 
         var x = document.cookie; 
         console.log(x)
-        var x = new XMLHttpRequest();
-
-        x.open('GET', 'http://localhost:3000/cookie/monster?cookie='+String(x))
-        x.send()
+        var xhttp = new XMLHttpRequest();
+        xhttp.open('POST', 'http://localhost:3000/cookie/monster')
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        
+        xhttp.send("cookie="+x)
 
         
     </script>
