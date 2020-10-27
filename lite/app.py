@@ -46,23 +46,30 @@ def login():
     query = "select password from user where email='{}';".format(email)
     cursor.execute(query)
 
-    hashed_password = cursor.fetchone()[0]
-    
-    print("Hashed password: {}".format(hashed_password))
+    hashed_password = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
+    if hashed_password is not None:
+        
+        hashed_password = hashed_password[0]
 
-    if hashed_password == password:
-        access_token = create_access_token(identity={'email':email})
-    
+        print("Hashed password: {}".format(hashed_password))
 
-        return jsonify({'status':"success", 'access_token':access_token, 'error':'None'}), 200
+        cursor.close()
+        conn.close()
 
+        if hashed_password == password:
+            print("works")
+            access_token = create_access_token(identity={'email':email})
+        
+
+            return jsonify({'status':"success", 'access_token':access_token, 'error':'None'}), 200
+
+
+        else:
+            return jsonify({'status':"failure", 'access_token':None, 'error':'Invalid Credentials'}), 200
 
     else:
         return jsonify({'status':"failure", 'access_token':None, 'error':'Invalid Credentials'}), 200
-
 
 @app.route('/unsafe/login', methods=['POST'])
 def unsafe_login():
@@ -73,22 +80,14 @@ def unsafe_login():
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
-    query = "select * from user where email="+email+"and password="+password+";"
-    print("Query is")
-    print(query)
+    query = "select password from user where email='{}' and password='{}';".format(email, password)
     cursor.execute(query)
 
-    hashed_password = cursor.fetchone()
-    
-    print("Hashed password: {}".format(hashed_password))
+    item = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
+    if  item is not None:
 
-    if hashed_password:
-        access_token = create_access_token(identity={'email':email})
-    
-
+        access_token = create_access_token(identity={'email': item[0]})
         return jsonify({'status':"success", 'access_token':access_token, 'error':'None'}), 200
 
 
@@ -157,14 +156,14 @@ def product_details():
 @app.route('/add/product', methods=['POST'])
 def add_product():
     data = request.get_json()
-    prod_id = data['prod_id']
+
     prod_name = data['prod_name']
-    prod_price = data['prod_price']
+    prod_description = data['prod_description']
 
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
-    cursor.execute("insert into product (prod_id, prod_name, prod_price) values ({}, '{}', {})".format(prod_id, prod_name, prod_price))
+    cursor.execute("insert into product (prod_name, prod_description) values ('{}', '{}')".format(prod_name, prod_description))
     conn.commit()
 
     cursor.close()
@@ -196,7 +195,7 @@ def parse_cookie_string(cookie_string):
 
 def transform_product_details(items):
 
-    meta = ['prod_id', 'prod_name', 'prod_price']
+    meta = ['prod_name', 'prod_description']
     data = []
 
     for item in items:

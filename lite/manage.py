@@ -49,7 +49,7 @@ print("[INFO] Done")
 
 # Creating product table
 print("[INFO] Creating product table")
-query = "create table product (prod_id int primary key, prod_name char(50) not null, prod_price int not null);"
+query = "create table product (prod_name char(50) not null, prod_description char(250) not null);"
 cursor.execute(query)
 conn.commit()
 print("[INFO] Done")
@@ -59,7 +59,7 @@ print("[INFO] Inseting into product table ..")
 df = pd.read_csv('../data/PRODUCT.csv')
 
 for idx, row in df.iterrows():
-    query = "insert into product (prod_id, prod_name, prod_price) values ({}, '{}', {});".format(row['PROD_ID'], row['PROD_NAME'], row['PROD_PRICE'])
+    query = "insert into product (prod_name, prod_description) values ('{}', '{}');".format(row['PROD_NAME'], row['PROD_DESC'])
     cursor.execute(query)
     conn.commit()
 print("[INFO] Done")
