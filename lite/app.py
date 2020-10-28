@@ -2,6 +2,8 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 
+from peewee import *
+
 import sqlite3
 
 from flask_jwt_extended import (
@@ -10,13 +12,33 @@ from flask_jwt_extended import (
 )
 
 from flask_cors import CORS
-from flaskext.mysql import MySQL
 
 app = Flask(__name__)
 
 CORS(app)
 
-mysql = MySQL()
+safe_db = SqliteDatabase('./safe.db')
+
+# Usermodel
+
+class BaseModel(Model):
+    class Meta:
+        database = safe_db 
+
+
+class SafeUser(BaseModel):
+    email = CharField(unique=True)
+    password = CharField(unique=True) 
+
+class SafeProduct(BaseModel):
+    prod_name = CharField(unique=True)
+    prod_description = TextField()
+
+
+# Connection
+safe_db.connect()
+safe_db.create_tables([SafeUser, SafeProduct])
+
 
 database = r"./dummy.db"
 
@@ -70,6 +92,74 @@ def login():
 
     else:
         return jsonify({'status':"failure", 'access_token':None, 'error':'Invalid Credentials'}), 200
+
+
+
+@app.route('/orm/register', methods=['POST'])
+def orm_register():
+    
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+
+    user = SafeUser(email=email, password=password)
+    user.save()
+    
+    return jsonify({
+        'status': 'success'
+    })
+
+
+@app.route('/orm/login', methods=['POST'])
+def orm_login():
+    
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    user = SafeUser.get_or_none(email=email)
+
+    if user is not None:
+        if password == user.password:
+            return jsonify({
+                'status': 'success'
+            })
+
+    else:
+
+        return jsonify({
+            'status': 'failure'
+        })
+
+
+@app.route('/orm/products', methods=['POST'])
+def orm_products():
+    
+    data = request.get_json()
+    
+    prod_name = data['prod_name']
+
+    
+    print(prod_name)
+
+    query = SafeProduct.select().where(SafeProduct.prod_name.contains(prod_name))
+
+    products = [tuple(item.values())[1:] for item in query.dicts()]
+
+    meta, data = transform_product_details(products)
+    
+
+    if prod_name == "":
+        data = []
+        
+    return jsonify({
+        'status':'Success',
+        'data': data,
+        'meta':meta,
+    })
+
+
 
 @app.route('/unsafe/login', methods=['POST'])
 def unsafe_login():
@@ -134,7 +224,8 @@ def product_details():
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
-    query = "select * from product where prod_name like '%{}%'".format(prod_name)
+    # query = "select * from product where prod_name like '%{}%'".format(prod_name)
+    query = "select prod_name, prod_description from product where prod_name like '%"+prod_name+"%';"
     cursor.execute(query)
     products = cursor.fetchall()
 
@@ -183,7 +274,7 @@ def get_cookies():
     
     return jsonify(
         {
-            "status": "sucess",
+            "status": "success",
         }
     )
 
@@ -192,7 +283,7 @@ def get_credentials():
 
     data = request.get_json()
     
-    username = data['username']
+    username = data['email']
     password = data['password']
 
 
@@ -201,7 +292,7 @@ def get_credentials():
 
     return jsonify(
         {
-            "status": "sucess",
+            "status": "success",
         }
     )
 
