@@ -74,9 +74,50 @@ Dont connect application to the database using an account with root access
 
 ## XSS (Cross Site Scripting)
 
+<a name="innerhtml" />
+
+### Don't use innerHTML in React
+
+Never try to add tags using innerHTML
+
+```
+el.innerHTML = "content"
+const newContent = "<script>alert('this script tage is the input from the user')</script>";
+el.innerHTML = newContent
+```
+
+Never use dangerouslyInnerHTML
+
+```
+<div  dangerouslyInnerHTML={{ __html: html }}/>
+```
+
+Never try to use InnerHTML from the module dangerously-set-html-content
+
+```
+<InnerHTML html={this.state.html} />
+```
+
+Instead do this, avoid it we can use the normal tags like <div><span> and render the output to the dom using a java script variable
+
+```
+state = {
+    htmlCon = "<script>alert("will not be executed")</script>"
+}
+// so undet the main component render function 
+    return(
+        <React.Fragment>
+        <div>{thid.state.htmlCon}</div>
+        </React.Fragment>
+    )
+```
+
+
+
+
 <a name="references" />
 
 ## References
 
-[1] https://www.ptsecurity.com/ww-en/analytics/knowledge-base/how-to-prevent-sql-injection-attacks/
+[1] https://www.ptsecurity.com/ww-en/analytics/knowledge-base/how-to-prevent-sql-injection-attacks/\
 [2] https://www.hacksplaining.com/prevention/sql-injection
