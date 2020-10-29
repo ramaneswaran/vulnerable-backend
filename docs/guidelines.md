@@ -121,3 +121,7 @@ state = {
 
 * https://www.ptsecurity.com/ww-en/analytics/knowledge-base/how-to-prevent-sql-injection-attacks/
 * https://www.hacksplaining.com/prevention/sql-injection
+* https://portswigger.net/web-security/sql-injection/union-attacks
+* https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns
+* https://portswigger.net/web-security/sql-injection/union-attacks/lab-find-column-containing-text
+* https://portswigger.net/web-security/dom-based
