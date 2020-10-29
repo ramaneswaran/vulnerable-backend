@@ -104,7 +104,7 @@ Instead do this, avoid it we can use the normal tags like <div><span> and render
 state = {
     htmlCon = "<script>alert("will not be executed")</script>"
 }
-// so undet the main component render function 
+// so under the main component render function 
     return(
         <React.Fragment>
         <div>{thid.state.htmlCon}</div>
