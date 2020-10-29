@@ -119,5 +119,5 @@ state = {
 
 ## References
 
-[1] https://www.ptsecurity.com/ww-en/analytics/knowledge-base/how-to-prevent-sql-injection-attacks/\
-[2] https://www.hacksplaining.com/prevention/sql-injection
+* https://www.ptsecurity.com/ww-en/analytics/knowledge-base/how-to-prevent-sql-injection-attacks/
+* https://www.hacksplaining.com/prevention/sql-injection
