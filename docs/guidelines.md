@@ -1,5 +1,7 @@
 # Developer Documentation 
 
+This document is a guide for developers to prevent vulnerabilities in their application
+
 ## Table Of Contents
 
 * [SQL Injection](#sqli)
@@ -8,6 +10,7 @@
     * [Parameterized Statements](#parameterize)
     * [Object Relation Mapping Frameworks](#orm)
     * [Avoid admininstrative priviliges](#admin)
+* [Cross Site Scripting](#xss)
 * [References](#references)
 
 
@@ -37,6 +40,7 @@ _mysql.escape_string(query)
 ```
 
 <a name="parameterize" />
+
 ### Parameterized Statements
 
 Parameterized statements make sure that the parameters (i.e. inputs) passed into SQL statements are treated in a safe manner.
@@ -65,6 +69,10 @@ Many development teams prefer to use Object Relational Mapping (ORM) frameworks 
 ### Avoid admininstrative priviliges
 
 Dont connect application to the database using an account with root access
+
+<a name="xss" />
+
+## XSS (Cross Site Scripting)
 
 <a name="references" />
 
