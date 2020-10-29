@@ -11,6 +11,7 @@ This document is a guide for developers to prevent vulnerabilities in their appl
     * [Object Relation Mapping Frameworks](#orm)
     * [Avoid admininstrative priviliges](#admin)
 * [Cross Site Scripting](#xss)
+    * [DOM Manipulation](#innerhtml)
 * [References](#references)
 
 
@@ -125,3 +126,5 @@ state = {
 * https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns
 * https://portswigger.net/web-security/sql-injection/union-attacks/lab-find-column-containing-text
 * https://portswigger.net/web-security/dom-based
+* https://owasp.org/www-community/attacks/DOM_Based_XSS
+* https://portswigger.net/web-security/cross-site-scripting/dom-based
