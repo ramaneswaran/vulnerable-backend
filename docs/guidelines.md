@@ -80,7 +80,7 @@ Dont connect application to the database using an account with root access
 
 Never try to add tags using innerHTML
 
-```
+```js
 el.innerHTML = "content"
 const newContent = "<script>alert('this script tage is the input from the user')</script>";
 el.innerHTML = newContent
@@ -88,19 +88,19 @@ el.innerHTML = newContent
 
 Never use dangerouslyInnerHTML
 
-```
+```js
 <div  dangerouslyInnerHTML={{ __html: html }}/>
 ```
 
 Never try to use InnerHTML from the module dangerously-set-html-content
 
-```
+```js
 <InnerHTML html={this.state.html} />
 ```
 
 Instead do this, avoid it we can use the normal tags like <div><span> and render the output to the dom using a java script variable
 
-```
+```js
 state = {
     htmlCon = "<script>alert("will not be executed")</script>"
 }
