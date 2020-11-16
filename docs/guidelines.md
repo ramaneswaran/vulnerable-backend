@@ -14,10 +14,29 @@ This document is a guide for developers to prevent vulnerabilities in their appl
     * [DOM Manipulation](#innerhtml)
 * [References](#references)
 
+## Abstract
+
+The world today is making rapid strides towards digitization and businesses are moving their operations online. Web Application vulnerabilities are into existence since the beginning of the internet and the world-wide web. In recent years, it has been given more importance considering the rapid expansion of online presence of critical businesses. Securing these applications is a growing concern as malicious attackers can exploit bugs in these softwares causing a breach of data or potentially halting the application. 
+
+With hackers aimed to exploit this security using various attacks, we are focusing on maintaining XSS attacks, Broken Authentication, Cookie Poisoning,Phishing and Sql Injection. SQL injection attack is a very common attack that manipulates the data passing through web applications to the database servers through web servers in such a way that it alters or reveals database contents. 
 
 <a name="sqli" />
 
 ## SQL Injection
+
+A SQL injection attack consists of insertion or “injection” of a SQL query via the input data from the client to the application. SQL injection attacks allow attackers to spoof identity, tamper with existing data, cause repudiation issues such as voiding transactions or changing balances, allow the complete disclosure of all data on the system, destroy the data or make it otherwise unavailable, and become administrators of the database server.
+
+| S.No | Database    | Command                                                                                            |
+|------|-------------|----------------------------------------------------------------------------------------------------|
+| 1.   | MySQL       | SLEEP (Time) –Delays the output execution                                                          |
+| 2.   | SQLite      | RANDOMBLOB (N) –It returns a BLOB value containing N-Bytes                                         |
+| 3.   | Oracle      | TO_CLOB-converts NCLOB values in a LOB column                                                      |
+| 4.   | PostgresSQL | DENSE_RANK ()-Computes the rank of a row in an ordered group of rows without skipping rank values. |
+| 5.   | MongoDB     | FIND()-To iterate over results fromMongoDB                                                         |
+| 6.   | IBM DB2     | COALESCE -returns the first non-null expression in a list of expressions.                          |
+
+
+## Prevention
 
 <a name="inputval" />
 
@@ -74,6 +93,10 @@ Dont connect application to the database using an account with root access
 <a name="xss" />
 
 ## XSS (Cross Site Scripting)
+
+Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user. Flaws that allow these attacks to succeed are quite widespread and occur anywhere a web application uses input from a user within the output it generates without validating or encoding it.
+
+## Prevention
 
 <a name="innerhtml" />
 
